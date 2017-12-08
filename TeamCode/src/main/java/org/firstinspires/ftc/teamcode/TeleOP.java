@@ -52,7 +52,7 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name="TeleOP", group="Iterative Opmode")
-@Disabled
+
 public class TeleOP extends OpMode
 {
     // Declare OpMode members.
@@ -62,8 +62,6 @@ public class TeleOP extends OpMode
     //armL and armR are the servos on the big arm
     private Servo armL = null;
     private Servo armR = null;
-    //head is the "wrist" to hold cube
-    private Servo head = null;
     //grabL and grabR hold the cube
     private Servo grabL = null;
     private Servo grabR = null;
@@ -85,7 +83,6 @@ public class TeleOP extends OpMode
         rightDrive = hardwareMap.get(DcMotor.class, "motorR");
         armL = hardwareMap.get(Servo.class, "armL");
         armR = hardwareMap.get(Servo.class, "armR");
-        head = hardwareMap.get(Servo.class, "head");
         grabL = hardwareMap.get(Servo.class, "grabL");
         grabR = hardwareMap.get(Servo.class, "grabR");
 
@@ -123,6 +120,10 @@ public class TeleOP extends OpMode
         double rightPower;
         double leftGrab;
         double rightGrab;
+        double pos1;
+        double pos2;
+        double pos3;
+        double pos4;
 
         // Choose to drive using Tank Mode
 
@@ -131,6 +132,13 @@ public class TeleOP extends OpMode
         rightPower = -gamepad1.right_stick_y;
         leftGrab = gamepad2.left_trigger;
         rightGrab = gamepad2.right_trigger;
+
+        if (gamepad2.a){
+            grabR.setPosition(1);
+        }else{
+            grabR.setPosition(0);
+        }
+
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
