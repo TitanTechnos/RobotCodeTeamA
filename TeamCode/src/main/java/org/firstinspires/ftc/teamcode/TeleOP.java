@@ -67,6 +67,7 @@ public class TeleOP extends OpMode
     private Servo grabR = null;
     //clockwise is down, counter is up for the head
     //grabR is counter, grabL is clock to close
+    private double zero = 0.002;
 
 
     /*
@@ -85,6 +86,12 @@ public class TeleOP extends OpMode
         armR = hardwareMap.get(Servo.class, "armR");
         grabL = hardwareMap.get(Servo.class, "grabL");
         grabR = hardwareMap.get(Servo.class, "grabR");
+
+
+        grabR.setPosition(zero);
+        grabL.setPosition(-zero);
+
+
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
@@ -133,16 +140,22 @@ public class TeleOP extends OpMode
         leftGrab = gamepad2.left_trigger;
         rightGrab = gamepad2.right_trigger;
 
-        if (gamepad2.a){
-            grabR.setPosition(1);
-        }else{
-            grabR.setPosition(0);
-        }
-
 
         // Send calculated power to wheels
         leftDrive.setPower(leftPower);
         rightDrive.setPower(rightPower);
+
+
+        if (gamepad2.a) {
+
+
+            grabR.setPosition(0.5); //Move to half-way
+
+
+        }else{
+            grabR.setPosition(0.002); //Move to 0
+        }
+
 
         // Show the elapsed game time and wheel power and trigger position.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
