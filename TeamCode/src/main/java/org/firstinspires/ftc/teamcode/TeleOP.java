@@ -33,6 +33,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
@@ -68,6 +69,7 @@ public class TeleOP extends OpMode
     //clockwise is down, counter is up for the head
     //grabR is counter, grabL is clock to close
     private double zero = 0.002;
+    private double maxPos = 0.7;
 
 
     /*
@@ -87,16 +89,21 @@ public class TeleOP extends OpMode
         grabL = hardwareMap.get(Servo.class, "grabL");
         grabR = hardwareMap.get(Servo.class, "grabR");
 
-
+        grabR.setDirection(Servo.Direction.REVERSE);
         grabR.setPosition(zero);
-        grabL.setPosition(-zero);
+        grabL.setPosition(zero);
+        //armL.setPosition(-zero);
+        //armR.setPosition(zero);
+
+
+        //armR.setDirection(Servo.Direction.REVERSE);
 
 
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
-        leftDrive.setDirection(DcMotor.Direction.FORWARD);
-        rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        //leftDrive.setDirection(DcMotor.Direction.REVERSE);
+        //rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         // Tell the driver that initialization is complete.
         telemetry.addData("Status", "Initialized");
@@ -127,16 +134,16 @@ public class TeleOP extends OpMode
         double rightPower;
         double leftGrab;
         double rightGrab;
-        double pos1;
-        double pos2;
-        double pos3;
-        double pos4;
+        double pos1 = 0;
+        double pos2 = 0.4;
+        double pos3 = 0.8;
+        double pos4 = 1;
 
         // Choose to drive using Tank Mode
 
 
         leftPower = -gamepad1.left_stick_y;
-        rightPower = -gamepad1.right_stick_y;
+        rightPower = gamepad1.right_stick_y;
         leftGrab = gamepad2.left_trigger;
         rightGrab = gamepad2.right_trigger;
 
@@ -146,14 +153,52 @@ public class TeleOP extends OpMode
         rightDrive.setPower(rightPower);
 
 
-        if (gamepad2.a) {
+        if(leftGrab>maxPos){
+
+            grabL.setPosition(0.7);
+
+        } else {
+            grabL.setPosition(leftGrab);
+        }
 
 
-            grabR.setPosition(0.5); //Move to half-way
+        if(rightGrab>maxPos){
+
+            grabR.setPosition(0.7);
+
+        } else {
+            grabR.setPosition(rightGrab);
+        }
 
 
-        }else{
-            grabR.setPosition(0.002); //Move to 0
+
+        if(gamepad2.a){
+
+            armR.setDirection(Servo.Direction.REVERSE);
+
+            armL.setPosition(pos1);
+            armR.setPosition(pos1);
+        }
+        if(gamepad2.b){
+
+            armR.setDirection(Servo.Direction.REVERSE);
+
+            armL.setPosition(pos2);
+            armR.setPosition(pos2);
+        }
+        if(gamepad2.y){
+
+            armR.setDirection(Servo.Direction.REVERSE);
+
+            armL.setPosition(pos3);
+            armR.setPosition(pos3);
+        }
+        if(gamepad2.x){
+
+            armR.setDirection(Servo.Direction.REVERSE);
+
+            armL.setPosition(pos4);
+            armR.setPosition(pos4);
         }
 
 
