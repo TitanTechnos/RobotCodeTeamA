@@ -89,13 +89,13 @@ public class TeleOP extends OpMode
         grabL = hardwareMap.get(Servo.class, "grabL");
         grabR = hardwareMap.get(Servo.class, "grabR");
 
-        grabR.setDirection(Servo.Direction.REVERSE);
+
         grabR.setPosition(zero);
-        grabL.setPosition(zero);
+        grabL.setPosition(-zero);
         //armL.setPosition(-zero);
         //armR.setPosition(zero);
 
-
+        grabR.setDirection(Servo.Direction.REVERSE);
         //armR.setDirection(Servo.Direction.REVERSE);
 
 
